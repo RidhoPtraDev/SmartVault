@@ -1,0 +1,62 @@
+# ─── OS ────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Editor ────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ─── AI Tools (local only) ─────────────────────────────
+.claude/
+.gemini/
+.cursor/
+AGENTS.md
+CLAUDE.md
+
+# ─── Node / npm ────────────────────────────────────────
+node_modules/
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+.pnpm-debug.*
+
+# ─── Expo / React Native ───────────────────────────────
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+.metro-health-check*
+
+# ─── Native builds ─────────────────────────────────────
+mobile/ios/
+mobile/android/
+.kotlin/
+*.orig.*
+
+# ─── Signing / Secrets ─────────────────────────────────
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+.env
+.env.*
+!.env.example
+
+# ─── TypeScript ────────────────────────────────────────
+*.tsbuildinfo
+
+# ─── Logs ──────────────────────────────────────────────
+logs/
+*.log
+
+# ─── Old root-level docs (moved to docs/) ──────────────
+/PRD_SmartVault.md
+/AI_CODING_RULES.md
+/DESIGN.md

@@ -1,0 +1,73 @@
+name: Feature Request
+description: Usulkan fitur atau peningkatan baru
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Punya ide fitur? Isi form di bawah dengan jelas supaya mudah di-track dan diimplementasikan.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Masalah apa yang coba diselesaikan fitur ini? Jelaskan dari sudut pandang user.
+      placeholder: "Sebagai user, saya kesulitan untuk... karena..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solusi yang Diusulkan
+      description: Bagaimana fitur ini seharusnya bekerja?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: Apa yang harus terpenuhi supaya fitur ini dianggap selesai?
+      placeholder: |
+        - [ ] User bisa melakukan X
+        - [ ] Sistem merespons dalam Y detik
+        - [ ] Tampilan sesuai design system SmartVault Aura
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Mobile App (UI/UX)
+        - Backend API
+        - WhatsApp Bot
+        - AI Receipt Scanner
+        - Notifikasi
+        - Laporan & Analytics
+        - Infrastruktur / DevOps
+        - Dokumentasi
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioritas
+      options:
+        - Tinggi (blocker untuk milestone berikutnya)
+        - Sedang (penting tapi tidak mendesak)
+        - Rendah (nice to have)
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatif yang Sudah Dipertimbangkan
+      description: Solusi lain apa yang sudah dipikirkan?
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Konteks Tambahan
+      description: Referensi, screenshot mockup, atau info tambahan lain.

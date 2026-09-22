@@ -1,0 +1,77 @@
+name: Bug Report
+description: Laporkan bug atau perilaku yang tidak diharapkan
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Terima kasih sudah melaporkan bug! Isi form di bawah dengan detail selengkap mungkin.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Deskripsi Bug
+      description: Jelaskan apa yang terjadi dengan jelas dan singkat.
+      placeholder: "Contoh: Teks header 'Create Vault Account' tampak blur di sisi kanan..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Langkah Reproduksi
+      description: Langkah-langkah untuk mereproduksi bug ini.
+      placeholder: |
+        1. Buka halaman '...'
+        2. Klik tombol '...'
+        3. Scroll ke '...'
+        4. Lihat error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Perilaku yang Diharapkan
+      description: Apa yang seharusnya terjadi?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Perilaku Aktual
+      description: Apa yang sebenarnya terjadi?
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshot / Video
+      description: Lampirkan screenshot atau video jika ada (drag & drop ke sini).
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options:
+        - Android
+        - iOS
+        - Web (browser)
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Versi App
+      placeholder: "misal: 0.1.0"
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Konteks Tambahan
+      description: Info lain yang relevan (device, OS version, Expo SDK, dll).

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📋 Product Requirements Document (PRD)
+    url: https://github.com/RidhoPtraDev/SmartVault/blob/main/docs/PRD.md
+    about: Baca PRD untuk memahami scope dan goals project sebelum membuat issue.
+  - name: 🎨 Design System
+    url: https://github.com/RidhoPtraDev/SmartVault/blob/main/docs/DESIGN.md
+    about: Lihat design system SmartVault Aura untuk panduan UI/UX.
