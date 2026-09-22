@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="mobile/assets/logo.png" alt="SmartVault Logo" width="96" height="96" />
+  <img src="mobile/assets/logo.png" alt="SmartVault Logo" width="180" height="180" />
   <h1>SmartVault</h1>
   <p><strong>Aplikasi manajemen keuangan pribadi lintas platform (Android & iOS)</strong><br/>
   dengan AI receipt scanner via WhatsApp dan laporan insight otomatis terjadwal.</p>
