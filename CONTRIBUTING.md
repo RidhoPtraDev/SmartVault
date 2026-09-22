@@ -19,19 +19,16 @@ Setiap task yang dikerjakan AI wajib melewati **3 tahap berurutan**:
 
 ## Branch Strategy
 
+Project ini dikerjakan solo — satu branch saja: **`main`**.
+
 ```
-main          ← production-ready, hanya merge via PR yang sudah diverifikasi
-develop       ← integrasi fitur aktif (default working branch)
-feature/*     ← fitur baru           contoh: feature/receipt-scanner
-fix/*         ← bug fix              contoh: fix/header-text-blur
-chore/*       ← setup, deps, refactor contoh: chore/update-dependencies
-docs/*        ← perubahan dokumentasi contoh: docs/update-prd
+main  ← satu-satunya branch, semua commit langsung ke sini
 ```
 
-**Aturan:**
-- Semua development dimulai dari `develop`, bukan dari `main`
-- Merge ke `main` hanya setelah fitur stabil dan CI hijau
-- `main` harus selalu bisa di-build dan dijalankan tanpa error
+**Aturan push:**
+- **JANGAN push otomatis** setiap ada perubahan code
+- Push ke GitHub **hanya ketika diminta secara eksplisit** ("push ke github")
+- `main` harus selalu bisa di-build dan dijalankan tanpa error sebelum push
 
 ---
 
