@@ -50,7 +50,7 @@ export const MAIN_ACCOUNT_DATA = {
           items: [
             {
               id: 'tx-bank-1',
-              title: 'Transfer Bank',
+              title: 'Go Car',
               category: 'Transport',
               amount: 500000,
               type: 'expense',
