@@ -33,7 +33,7 @@ export const DASHBOARD_DATA = {
     },
     {
       id: 'acc-savings',
-      name: 'Savings Account',
+      name: 'Tabungan',
       balance: 10250000,
       iconType: 'savings',
       iconBg: '#EFF6FF',
