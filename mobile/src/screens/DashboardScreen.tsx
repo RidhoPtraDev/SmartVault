@@ -318,11 +318,6 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onPressAccount
             <Text style={{ fontSize: 18, fontWeight: '700', color: '#0F172A' }}>
               Accounts
             </Text>
-            <TouchableOpacity activeOpacity={0.7}>
-              <Text style={{ fontSize: 13, fontWeight: '600', color: '#4F46E5' }}>
-                See All
-              </Text>
-            </TouchableOpacity>
           </View>
 
           {/* 3 Separate Floating Cards */}
