@@ -32,7 +32,7 @@ export const BUDGET_CATEGORIES: BudgetCategory[] = [
   {
     id: 'bcat-1',
     name: 'Shopping',
-    imageSource: require('../../assets/online-shopping-icon.png'),
+    imageSource: require('../../assets/shopping-icon.png'),
     iconColor: '#8B5CF6',
     iconBgColor: 'transparent',
     percentage: 75,
@@ -58,7 +58,7 @@ export const BUDGET_CATEGORIES: BudgetCategory[] = [
   {
     id: 'bcat-3',
     name: 'Transport',
-    imageSource: require('../../assets/taxi-icon.png'),
+    imageSource: require('../../assets/transport-icon.png'),
     iconColor: '#3B82F6',
     iconBgColor: 'transparent',
     percentage: 64,
