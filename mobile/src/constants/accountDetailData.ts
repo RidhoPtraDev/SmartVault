@@ -4,8 +4,9 @@ import { LucideIcon, Send, Wallet } from 'lucide-react-native';
 export interface AccountQuickAction {
   id: string;
   label: string;
-  icon: LucideIcon;
-  iconColor: string;
+  imageSource?: ImageSourcePropType;
+  icon?: LucideIcon;
+  iconColor?: string;
   bgColor: string;
 }
 
@@ -34,15 +35,13 @@ export const MAIN_ACCOUNT_DATA = {
     {
       id: 'qa-bank',
       label: 'Saldo Rekening',
-      icon: Send,
-      iconColor: '#4F46E5',
+      imageSource: require('../../assets/bank-card-icon.png'),
       bgColor: '#EEF2FF',
     },
     {
       id: 'qa-wallet',
       label: 'Saldo E-Wallet',
-      icon: Wallet,
-      iconColor: '#0D9488',
+      imageSource: require('../../assets/ewallet-icon.png'),
       bgColor: '#F5F3FF',
     },
   ] as AccountQuickAction[],

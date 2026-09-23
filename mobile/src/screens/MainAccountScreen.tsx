@@ -288,14 +288,23 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginBottom: 10,
-                    shadowColor: action.iconColor,
+                    shadowColor: action.iconColor || '#4F46E5',
                     shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.1,
                     shadowRadius: 10,
                     elevation: 2,
+                    overflow: 'hidden',
                   }}
                 >
-                  <IconComponent size={26} color={action.iconColor} />
+                  {action.imageSource ? (
+                    <Image
+                      source={action.imageSource}
+                      style={{ width: 42, height: 42 }}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    IconComponent && <IconComponent size={26} color={action.iconColor} />
+                  )}
                 </View>
                 <Text
                   style={{
