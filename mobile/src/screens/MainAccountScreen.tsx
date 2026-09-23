@@ -111,7 +111,7 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
   const balanceSubLabel = useMemo(() => {
     if (selectedSubAccount === 'bank') return 'Saldo Rekening';
     if (selectedSubAccount === 'ewallet') return 'Saldo E-Wallet';
-    return 'Total Main Account';
+    return 'Total Akun Utama';
   }, [selectedSubAccount]);
 
   // Transaction list filtering

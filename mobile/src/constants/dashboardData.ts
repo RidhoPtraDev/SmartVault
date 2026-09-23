@@ -25,7 +25,7 @@ export const DASHBOARD_DATA = {
   accounts: [
     {
       id: 'acc-main',
-      name: 'Main Account',
+      name: 'Akun Utama',
       balance: 8540000,
       iconType: 'main',
       iconBg: '#ECFDF5',

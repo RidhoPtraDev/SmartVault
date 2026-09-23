@@ -31,7 +31,7 @@ export interface SubAccountDetail {
 
 export const MAIN_ACCOUNT_DATA = {
   id: 'acc-main',
-  accountName: 'Main Account',
+  accountName: 'Akun Utama',
   totalBalance: 8540000,
   monthChips: ['Mei', 'Jun', 'Jul', 'Agu', 'Sep'],
   activeMonth: 'Sep',
