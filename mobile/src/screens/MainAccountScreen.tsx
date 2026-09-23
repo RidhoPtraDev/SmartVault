@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -15,11 +15,13 @@ import {
   Eye,
   EyeOff,
   SlidersHorizontal,
-  Send,
-  Wallet,
 } from 'lucide-react-native';
 import Svg, { Defs, LinearGradient, RadialGradient, Stop, Rect } from 'react-native-svg';
-import { MAIN_ACCOUNT_DATA } from '../constants/accountDetailData';
+import {
+  MAIN_ACCOUNT_DATA,
+  SubAccountType,
+  AccountDateGroup,
+} from '../constants/accountDetailData';
 import { formatIDR } from '../utils/formatCurrency';
 
 interface MainAccountScreenProps {
@@ -29,13 +31,12 @@ interface MainAccountScreenProps {
 export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) => {
   const { height: screenHeight } = useWindowDimensions();
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
+  const [selectedSubAccount, setSelectedSubAccount] = useState<SubAccountType>('all');
   const [selectedMonth, setSelectedMonth] = useState(MAIN_ACCOUNT_DATA.activeMonth);
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Define snap positions in pixel coordinates from top of screen:
-  // Expanded: top sits at 76px (just below the 68px top header)
   const EXPANDED_TOP = 76;
-  // Collapsed: positioned to show top 2 transactions under quick actions
   const COLLAPSED_TOP = Math.max(345, Math.min(screenHeight * 0.44, 360));
 
   const translateY = useRef(new Animated.Value(COLLAPSED_TOP)).current;
@@ -78,16 +79,11 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
         }
       },
       onPanResponderRelease: (_, gestureState) => {
-        // Dragged upward
         if (gestureState.dy < -50 || gestureState.vy < -0.4) {
           animateTo(EXPANDED_TOP);
-        }
-        // Dragged downward
-        else if (gestureState.dy > 50 || gestureState.vy > 0.4) {
+        } else if (gestureState.dy > 50 || gestureState.vy > 0.4) {
           animateTo(COLLAPSED_TOP);
-        }
-        // Snap to nearest
-        else {
+        } else {
           const currentPos = currentY.current + gestureState.dy;
           const midPoint = (EXPANDED_TOP + COLLAPSED_TOP) / 2;
           if (currentPos < midPoint) {
@@ -99,6 +95,62 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
       },
     })
   ).current;
+
+  // Active balance calculation
+  const currentBalance = useMemo(() => {
+    if (selectedSubAccount === 'bank') {
+      return MAIN_ACCOUNT_DATA.subAccounts.bank.balance;
+    }
+    if (selectedSubAccount === 'ewallet') {
+      return MAIN_ACCOUNT_DATA.subAccounts.ewallet.balance;
+    }
+    return MAIN_ACCOUNT_DATA.totalBalance;
+  }, [selectedSubAccount]);
+
+  // Active sub-account label
+  const balanceSubLabel = useMemo(() => {
+    if (selectedSubAccount === 'bank') return 'Saldo Rekening';
+    if (selectedSubAccount === 'ewallet') return 'Saldo E-Wallet';
+    return 'Total Main Account';
+  }, [selectedSubAccount]);
+
+  // Transaction list filtering
+  const displayedTransactionGroups = useMemo<AccountDateGroup[]>(() => {
+    if (selectedSubAccount === 'bank') {
+      return MAIN_ACCOUNT_DATA.subAccounts.bank.transactionGroups;
+    }
+    if (selectedSubAccount === 'ewallet') {
+      return MAIN_ACCOUNT_DATA.subAccounts.ewallet.transactionGroups;
+    }
+
+    // Merge all transactions by date group
+    const dateMap = new Map<string, any[]>();
+    const bankGroups = MAIN_ACCOUNT_DATA.subAccounts.bank.transactionGroups;
+    const ewalletGroups = MAIN_ACCOUNT_DATA.subAccounts.ewallet.transactionGroups;
+
+    [...bankGroups, ...ewalletGroups].forEach((group) => {
+      if (!dateMap.has(group.date)) {
+        dateMap.set(group.date, []);
+      }
+      dateMap.get(group.date)!.push(...group.items);
+    });
+
+    return Array.from(dateMap.entries()).map(([date, items]) => ({
+      date,
+      items,
+    }));
+  }, [selectedSubAccount]);
+
+  const handleToggleSubAccount = (type: 'bank' | 'ewallet') => {
+    if (selectedSubAccount === type) {
+      setSelectedSubAccount('all');
+    } else {
+      setSelectedSubAccount(type);
+    }
+  };
+
+  const bankAccount = MAIN_ACCOUNT_DATA.subAccounts.bank;
+  const ewalletAccount = MAIN_ACCOUNT_DATA.subAccounts.ewallet;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FAF8FF' }}>
@@ -139,15 +191,37 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
         </TouchableOpacity>
 
         {/* Title */}
-        <Text style={{ fontSize: 20, fontWeight: '700', color: '#0F172A' }}>
-          {MAIN_ACCOUNT_DATA.accountName}
-        </Text>
+        <View style={{ flex: 1 }}>
+          <Text style={{ fontSize: 20, fontWeight: '700', color: '#0F172A' }}>
+            {MAIN_ACCOUNT_DATA.accountName}
+          </Text>
+        </View>
+
+        {/* Mode Indicator Badge (All vs Selected Sub Account) */}
+        {selectedSubAccount !== 'all' && (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => setSelectedSubAccount('all')}
+            style={{
+              paddingHorizontal: 12,
+              paddingVertical: 5,
+              borderRadius: 999,
+              backgroundColor: '#EEF2FF',
+              borderWidth: 1,
+              borderColor: '#C7D2FE',
+            }}
+          >
+            <Text style={{ fontSize: 11, fontWeight: '700', color: '#4F46E5' }}>
+              Lihat Total
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {/* ─── BACKGROUND CONTENT (HERO CARD & QUICK ACTIONS) ─── */}
       <View style={{ flex: 1 }}>
-        {/* ─── 2. HERO KARTU SALDO (LEBIH BESAR & LEGA) ─── */}
-        <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+        {/* ─── 2. HERO KARTU SALDO (DINAMIS PER SUB AKUN / TOTAL) ─── */}
+        <View style={{ paddingHorizontal: 20, marginBottom: 16 }}>
           <View
             style={{
               borderRadius: 24,
@@ -160,7 +234,7 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
               position: 'relative',
             }}
           >
-            {/* Background Ocean Blue + Lavender Accent Gradient (Matching Dashboard Total Saldo Card) */}
+            {/* Background Ocean Blue + Lavender Accent Gradient */}
             <Svg width="100%" height="165" style={{ position: 'absolute' }}>
               <Defs>
                 <LinearGradient
@@ -193,25 +267,47 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
             </Svg>
 
             <View style={{ padding: 24 }}>
-              {/* Row 1: Saldo Efektif + Eye Toggle */}
+              {/* Row 1: Saldo Efektif + Tag Sub-Akun + Eye Toggle */}
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
+                  justifyContent: 'space-between',
                   marginBottom: 12,
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: '600',
-                    color: '#FFFFFF',
-                    marginRight: 8,
-                    opacity: 0.95,
-                  }}
-                >
-                  Saldo Efektif
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '600',
+                      color: '#FFFFFF',
+                      marginRight: 8,
+                      opacity: 0.95,
+                    }}
+                  >
+                    Saldo Efektif
+                  </Text>
+                  <View
+                    style={{
+                      paddingHorizontal: 8,
+                      paddingVertical: 2,
+                      borderRadius: 6,
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 11,
+                        fontWeight: '600',
+                        color: '#FFFFFF',
+                      }}
+                    >
+                      {balanceSubLabel}
+                    </Text>
+                  </View>
+                </View>
+
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() => setIsBalanceVisible(!isBalanceVisible)}
@@ -232,7 +328,7 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
                 </TouchableOpacity>
               </View>
 
-              {/* Row 2: Nominal Saldo */}
+              {/* Row 2: Nominal Saldo Terpisah / Total */}
               <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
                 <Text
                   style={{
@@ -253,7 +349,7 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
                   }}
                 >
                   {isBalanceVisible
-                    ? formatIDR(MAIN_ACCOUNT_DATA.balance, false)
+                    ? formatIDR(currentBalance, false)
                     : '••••••••'}
                 </Text>
               </View>
@@ -261,64 +357,109 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
           </View>
         </View>
 
-        {/* ─── 3. QUICK ACTION BUTTONS (KEBAWAHIN DIKIT) ─── */}
+        {/* ─── 3. QUICK ACTION BUTTONS (SUB-ACCOUNT SELECTORS) ─── */}
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            paddingHorizontal: 36,
+            paddingHorizontal: 28,
             marginTop: 4,
-            marginBottom: 24,
+            marginBottom: 20,
           }}
         >
-          {MAIN_ACCOUNT_DATA.quickActions.map((action) => {
-            const IconComponent = action.icon;
-            return (
-              <TouchableOpacity
-                key={action.id}
-                activeOpacity={0.8}
-                style={{ alignItems: 'center' }}
-              >
-                <View
-                  style={{
-                    width: 64,
-                    height: 64,
-                    borderRadius: 22,
-                    backgroundColor: action.bgColor,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 10,
-                    shadowColor: action.iconColor || '#4F46E5',
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 10,
-                    elevation: 2,
-                    overflow: 'hidden',
-                  }}
-                >
-                  {action.imageSource ? (
-                    <Image
-                      source={action.imageSource}
-                      style={{ width: 42, height: 42 }}
-                      resizeMode="contain"
-                    />
-                  ) : (
-                    IconComponent && <IconComponent size={26} color={action.iconColor} />
-                  )}
-                </View>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    fontWeight: '600',
-                    color: '#0F172A',
-                    textAlign: 'center',
-                  }}
-                >
-                  {action.label}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+          {/* Button 1: Saldo Rekening */}
+          <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={() => handleToggleSubAccount('bank')}
+            style={{
+              alignItems: 'center',
+              flex: 1,
+              maxWidth: 150,
+            }}
+          >
+            <View
+              style={{
+                width: 68,
+                height: 68,
+                borderRadius: 24,
+                backgroundColor: bankAccount.bgColor,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 8,
+                borderWidth: selectedSubAccount === 'bank' ? 2.5 : 1,
+                borderColor: selectedSubAccount === 'bank' ? '#4F46E5' : '#E2E8F0',
+                shadowColor: '#4F46E5',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: selectedSubAccount === 'bank' ? 0.2 : 0.05,
+                shadowRadius: 10,
+                elevation: selectedSubAccount === 'bank' ? 4 : 1,
+                overflow: 'hidden',
+              }}
+            >
+              <Image
+                source={bankAccount.imageSource}
+                style={{ width: 44, height: 44 }}
+                resizeMode="contain"
+              />
+            </View>
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: selectedSubAccount === 'bank' ? '700' : '600',
+                color: selectedSubAccount === 'bank' ? '#4F46E5' : '#0F172A',
+                textAlign: 'center',
+              }}
+            >
+              {bankAccount.label}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Button 2: Saldo E-Wallet */}
+          <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={() => handleToggleSubAccount('ewallet')}
+            style={{
+              alignItems: 'center',
+              flex: 1,
+              maxWidth: 150,
+            }}
+          >
+            <View
+              style={{
+                width: 68,
+                height: 68,
+                borderRadius: 24,
+                backgroundColor: ewalletAccount.bgColor,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 8,
+                borderWidth: selectedSubAccount === 'ewallet' ? 2.5 : 1,
+                borderColor: selectedSubAccount === 'ewallet' ? '#0D9488' : '#E2E8F0',
+                shadowColor: '#0D9488',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: selectedSubAccount === 'ewallet' ? 0.2 : 0.05,
+                shadowRadius: 10,
+                elevation: selectedSubAccount === 'ewallet' ? 4 : 1,
+                overflow: 'hidden',
+              }}
+            >
+              <Image
+                source={ewalletAccount.imageSource}
+                style={{ width: 44, height: 44 }}
+                resizeMode="contain"
+              />
+            </View>
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: selectedSubAccount === 'ewallet' ? '700' : '600',
+                color: selectedSubAccount === 'ewallet' ? '#0D9488' : '#0F172A',
+                textAlign: 'center',
+              }}
+            >
+              {ewalletAccount.label}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -343,7 +484,7 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
           zIndex: 20,
         }}
       >
-        {/* Drag Handle Area (Swipe Up / Down or Tap to Expand / Collapse) */}
+        {/* Drag Handle Area */}
         <View
           {...panResponder.panHandlers}
           style={{
@@ -388,7 +529,11 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
                 color: '#0F172A',
               }}
             >
-              Semua transaksi
+              {selectedSubAccount === 'bank'
+                ? 'Transaksi Saldo Rekening'
+                : selectedSubAccount === 'ewallet'
+                ? 'Transaksi Saldo E-Wallet'
+                : 'Semua transaksi'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -457,7 +602,7 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
           </View>
 
           {/* Transaction Groups by Date */}
-          {MAIN_ACCOUNT_DATA.transactionGroups.map((group) => (
+          {displayedTransactionGroups.map((group) => (
             <View key={group.date} style={{ marginBottom: 16 }}>
               {/* Date Header */}
               <Text
@@ -500,14 +645,12 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
                             overflow: 'hidden',
                           }}
                         >
-                          {item.imageSource ? (
+                          {item.imageSource && (
                             <Image
                               source={item.imageSource}
                               style={{ width: 52, height: 52 }}
                               resizeMode="cover"
                             />
-                          ) : (
-                            item.icon && <item.icon size={20} color={item.iconColor} />
                           )}
                         </View>
 
