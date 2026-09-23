@@ -22,7 +22,11 @@ import { DASHBOARD_DATA } from '../constants/dashboardData';
 import { SpendingDonutChart } from '../components/ui/SpendingDonutChart';
 import { formatIDR } from '../utils/formatCurrency';
 
-export const DashboardScreen: React.FC = () => {
+interface DashboardScreenProps {
+  onPressAccount?: (accountId: string) => void;
+}
+
+export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onPressAccount }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
   // Helper icon renderer for accounts
@@ -333,6 +337,7 @@ export const DashboardScreen: React.FC = () => {
             <TouchableOpacity
               key={acc.id}
               activeOpacity={0.88}
+              onPress={() => onPressAccount && onPressAccount(acc.id)}
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: 16,

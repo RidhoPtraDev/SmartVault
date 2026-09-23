@@ -5,6 +5,7 @@ import { TransactionsScreen } from '../screens/TransactionsScreen';
 import { BudgetScreen } from '../screens/BudgetScreen';
 import { SavingsScreen } from '../screens/SavingsScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
+import { MainAccountScreen } from '../screens/MainAccountScreen';
 import { AuthScreen } from '../screens/AuthScreen';
 import { SplashScreen } from '../screens/SplashScreen';
 import { FloatingNavDock } from '../components/ui/FloatingNavDock';
@@ -26,6 +27,7 @@ export const RootNavigator: React.FC = () => {
 
   // State layar aktif — mulai dari splash selalu pada cold start
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('splash');
+  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [txType, setTxType] = useState<'expense' | 'income'>('expense');
@@ -69,7 +71,7 @@ export const RootNavigator: React.FC = () => {
         return <ProfileScreen />;
       case 'dashboard':
       default:
-        return <DashboardScreen />;
+        return <DashboardScreen onPressAccount={(id) => setSelectedAccountId(id)} />;
     }
   };
 
@@ -84,7 +86,12 @@ export const RootNavigator: React.FC = () => {
     return <AuthScreen />;
   }
 
-  // — Alur 3: Main App (setelah login berhasil) —
+  // — Alur 3: Account Detail Screen (Main Account) —
+  if (selectedAccountId) {
+    return <MainAccountScreen onBack={() => setSelectedAccountId(null)} />;
+  }
+
+  // — Alur 4: Main App (setelah login berhasil) —
   return (
     <View className="flex-1 bg-[#F4F5FB] relative">
       {renderScreen()}
