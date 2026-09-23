@@ -41,7 +41,7 @@ export const DASHBOARD_DATA = {
     },
     {
       id: 'acc-investment',
-      name: 'Investment',
+      name: 'Investasi',
       balance: 5770500,
       iconType: 'investment',
       iconBg: '#F5F3FF',
