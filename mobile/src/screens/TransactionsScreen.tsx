@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Image } from 'react-native';
-import { ChevronLeft, SlidersHorizontal, LucideIcon } from 'lucide-react-native';
+import { SlidersHorizontal, LucideIcon } from 'lucide-react-native';
 import Svg, { Defs, LinearGradient, RadialGradient, Stop, Rect } from 'react-native-svg';
 import { useFinanceStore } from '../store/useFinanceStore';
 import { TRANSACTION_GROUPS, GroupedTransactionItem } from '../constants/transactionsData';
@@ -18,7 +18,7 @@ export const TransactionsScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FAF8FF' }}>
-      {/* ─── 1. TOP APP BAR (SEJAJAR PERSIS DENGAN DASHBOARD HEADER) ─── */}
+      {/* ─── 1. TOP APP BAR ─── */}
       <View
         style={{
           paddingHorizontal: 20,
@@ -27,34 +27,11 @@ export const TransactionsScreen: React.FC = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-          height: 68, // paddingTop: 12 + height: 44 + paddingBottom: 12
+          height: 68,
         }}
       >
-        {/* Back Button */}
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => setActiveTab('dashboard')}
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: '#FFFFFF',
-            borderWidth: 1,
-            borderColor: '#F1F5F9',
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#0F172A',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.05,
-            shadowRadius: 10,
-            elevation: 2,
-          }}
-        >
-          <ChevronLeft size={20} color="#0F172A" />
-        </TouchableOpacity>
-
         {/* Title */}
-        <Text style={{ fontSize: 18, fontWeight: '700', color: '#0F172A' }}>
+        <Text style={{ fontSize: 20, fontWeight: '700', color: '#0F172A' }}>
           Transactions
         </Text>
 
