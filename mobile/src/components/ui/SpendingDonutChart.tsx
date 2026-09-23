@@ -42,7 +42,7 @@ export const SpendingDonutChart: React.FC<SpendingDonutChartProps> = ({
         </Defs>
 
         {/* Rotated group starting at top (12 o'clock) */}
-        <G rotation="-90" origin={`${center}, ${center}`}>
+        <G transform={`rotate(-90 ${center} ${center})`}>
           {categories.map((cat) => {
             const strokeDasharray = `${(cat.percentage / 100) * circumference} ${
               circumference - (cat.percentage / 100) * circumference
