@@ -299,13 +299,6 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onPressAccount
                     </Text>
                   </View>
                 </View>
-
-                {/* Right Frosted Glass Wallet Icon Image - Centered Vertically */}
-                <Image
-                  source={require('../../assets/wallet-card-icon.png')}
-                  style={{ width: 48, height: 48, alignSelf: 'center' }}
-                  resizeMode="contain"
-                />
               </View>
             </View>
           </View>
