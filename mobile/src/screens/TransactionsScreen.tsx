@@ -211,7 +211,7 @@ export const TransactionsScreen: React.FC = () => {
                 const isExpense = item.type === 'expense';
                 const formattedAmount = formatIDR(item.amount);
                 const isCircularImage = item.iconBgColor === 'transparent' && !!item.imageSource;
-                const isClippedJpeg = item.id === 'tx-yest-2' || item.id === 'tx-may-2';
+                const isClippedJpeg = isCircularImage;
 
                 return (
                   <TouchableOpacity

@@ -1,5 +1,5 @@
 import { ImageSourcePropType } from 'react-native';
-import { LucideIcon, Zap } from 'lucide-react-native';
+import { LucideIcon, ShoppingBag } from 'lucide-react-native';
 
 export interface GroupedTransactionItem {
   id: string;
@@ -27,25 +27,25 @@ export const TRANSACTION_GROUPS: DateGroupedTransactions[] = [
     items: [
       {
         id: 'tx-today-1',
-        title: 'Grocery Store',
-        category: 'Grocery',
+        title: 'Monthly Spending',
+        category: 'Shopping',
         time: '14:30',
         amount: 68500,
         type: 'expense',
-        imageSource: require('../../assets/grocery-icon.png'),
-        iconBgColor: '#DCFCE7',
-        iconColor: '#059669',
+        imageSource: require('../../assets/online-shopping-icon.png'),
+        iconBgColor: 'transparent',
+        iconColor: '#8B5CF6',
       },
       {
         id: 'tx-today-2',
-        title: 'Cashback Received',
-        category: 'Rewards',
+        title: 'Cashback',
+        category: 'Income',
         time: '11:15',
         amount: 25000,
         type: 'income',
-        imageSource: require('../../assets/cashback-icon.png'),
+        imageSource: require('../../assets/salary-icon.png'),
         iconBgColor: 'transparent',
-        iconColor: '#10B981',
+        iconColor: '#06B6D4',
       },
     ],
   },
@@ -62,7 +62,7 @@ export const TRANSACTION_GROUPS: DateGroupedTransactions[] = [
         type: 'expense',
         imageSource: require('../../assets/online-shopping-icon.png'),
         iconBgColor: 'transparent',
-        iconColor: '#7C3AED',
+        iconColor: '#8B5CF6',
       },
       {
         id: 'tx-yest-2',
@@ -84,13 +84,13 @@ export const TRANSACTION_GROUPS: DateGroupedTransactions[] = [
       {
         id: 'tx-may-1',
         title: 'Electricity Bill',
-        category: 'Utilities',
+        category: 'Bills',
         time: '16:45',
         amount: 75500,
         type: 'expense',
-        icon: Zap,
-        iconBgColor: '#FEF3C7',
-        iconColor: '#D97706',
+        imageSource: require('../../assets/bills-icon.png'),
+        iconBgColor: 'transparent',
+        iconColor: '#F59E0B',
       },
       {
         id: 'tx-may-2',

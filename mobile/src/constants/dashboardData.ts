@@ -63,7 +63,7 @@ export const DASHBOARD_DATA = {
       },
       {
         id: 'cat-food',
-        name: 'Food & Dining',
+        name: 'Food & Drink',
         percentage: 25,
         amount: 722625,
         gradientStart: '#2DD4BF',

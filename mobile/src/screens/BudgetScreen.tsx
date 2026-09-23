@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import {
   Menu,
@@ -214,14 +215,23 @@ export const BudgetScreen: React.FC = () => {
                       style={{
                         width: 40,
                         height: 40,
-                        borderRadius: 14,
+                        borderRadius: 20,
                         backgroundColor: cat.iconBgColor,
                         alignItems: 'center',
                         justifyContent: 'center',
                         marginRight: 12,
+                        overflow: 'hidden',
                       }}
                     >
-                      <IconComponent size={20} color={cat.iconColor} />
+                      {cat.imageSource ? (
+                        <Image
+                          source={cat.imageSource}
+                          style={{ width: 48, height: 48 }}
+                          resizeMode="cover"
+                        />
+                      ) : IconComponent ? (
+                        <IconComponent size={20} color={cat.iconColor} />
+                      ) : null}
                     </View>
 
                     {/* Category Name */}

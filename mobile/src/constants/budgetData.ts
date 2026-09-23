@@ -1,9 +1,11 @@
+import { ImageSourcePropType } from 'react-native';
 import { LucideIcon, ShoppingBag, Utensils, Car, Zap, Ticket } from 'lucide-react-native';
 
 export interface BudgetCategory {
   id: string;
   name: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
+  imageSource?: ImageSourcePropType;
   iconColor: string;
   iconBgColor: string;
   percentage: number;
@@ -30,9 +32,9 @@ export const BUDGET_CATEGORIES: BudgetCategory[] = [
   {
     id: 'bcat-1',
     name: 'Shopping',
-    icon: ShoppingBag,
+    imageSource: require('../../assets/online-shopping-icon.png'),
     iconColor: '#8B5CF6',
-    iconBgColor: '#F5F3FF',
+    iconBgColor: 'transparent',
     percentage: 75,
     spent: 1120000,
     limit: 1500000,
@@ -42,10 +44,10 @@ export const BUDGET_CATEGORIES: BudgetCategory[] = [
   },
   {
     id: 'bcat-2',
-    name: 'Food & Dining',
-    icon: Utensils,
+    name: 'Food & Drink',
+    imageSource: require('../../assets/food-icon.png'),
     iconColor: '#F97316',
-    iconBgColor: '#FFF7ED',
+    iconBgColor: 'transparent',
     percentage: 80,
     spent: 640000,
     limit: 800000,
@@ -56,9 +58,9 @@ export const BUDGET_CATEGORIES: BudgetCategory[] = [
   {
     id: 'bcat-3',
     name: 'Transport',
-    icon: Car,
+    imageSource: require('../../assets/taxi-icon.png'),
     iconColor: '#3B82F6',
-    iconBgColor: '#EFF6FF',
+    iconBgColor: 'transparent',
     percentage: 64,
     spent: 320000,
     limit: 500000,
@@ -68,9 +70,9 @@ export const BUDGET_CATEGORIES: BudgetCategory[] = [
   {
     id: 'bcat-4',
     name: 'Bills',
-    icon: Zap,
+    imageSource: require('../../assets/bills-icon.png'),
     iconColor: '#F59E0B',
-    iconBgColor: '#FFFBEB',
+    iconBgColor: 'transparent',
     percentage: 62,
     spent: 250000,
     limit: 400000,
@@ -80,9 +82,9 @@ export const BUDGET_CATEGORIES: BudgetCategory[] = [
   {
     id: 'bcat-5',
     name: 'Entertainment',
-    icon: Ticket,
+    imageSource: require('../../assets/entertainment-icon.png'),
     iconColor: '#10B981',
-    iconBgColor: '#ECFDF5',
+    iconBgColor: 'transparent',
     percentage: 50,
     spent: 150000,
     limit: 300000,
