@@ -35,8 +35,8 @@ export const MainAccountScreen: React.FC<MainAccountScreenProps> = ({ onBack }) 
   // Define snap positions in pixel coordinates from top of screen:
   // Expanded: top sits at 76px (just below the 68px top header)
   const EXPANDED_TOP = 76;
-  // Collapsed: top sits just below the quick actions buttons (~57% of screen height)
-  const COLLAPSED_TOP = Math.max(screenHeight * 0.57, 430);
+  // Collapsed: positioned to show top 2 transactions under quick actions
+  const COLLAPSED_TOP = Math.max(345, Math.min(screenHeight * 0.44, 360));
 
   const translateY = useRef(new Animated.Value(COLLAPSED_TOP)).current;
   const currentY = useRef(COLLAPSED_TOP);
