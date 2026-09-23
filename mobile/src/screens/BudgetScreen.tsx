@@ -8,7 +8,6 @@ import {
   Image,
 } from 'react-native';
 import {
-  Menu,
   MoreVertical,
   TrendingUp,
   Lightbulb,
@@ -22,7 +21,7 @@ export const BudgetScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FAF8FF' }}>
-      {/* ─── 1. TOP APP BAR (same spacing as DashboardScreen & TransactionsScreen) ─── */}
+      {/* ─── 1. TOP APP BAR ─── */}
       <View
         style={{
           paddingHorizontal: 20,
@@ -34,30 +33,8 @@ export const BudgetScreen: React.FC = () => {
           height: 68,
         }}
       >
-        {/* Left: Menu Button */}
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: '#FFFFFF',
-            borderWidth: 1,
-            borderColor: '#F1F5F9',
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#0F172A',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.05,
-            shadowRadius: 10,
-            elevation: 2,
-          }}
-        >
-          <Menu size={20} color="#0F172A" />
-        </TouchableOpacity>
-
-        {/* Centre: Title */}
-        <Text style={{ fontSize: 18, fontWeight: '700', color: '#0F172A' }}>
+        {/* Title */}
+        <Text style={{ fontSize: 20, fontWeight: '700', color: '#0F172A' }}>
           Budget
         </Text>
 

@@ -8,7 +8,6 @@ import {
   Image,
 } from 'react-native';
 import {
-  Menu,
   Bell,
   Eye,
   EyeOff,
@@ -71,33 +70,11 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onPressAccount
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
             alignItems: 'center',
             marginBottom: 20,
           }}
         >
-          {/* Left: Menu button 44x44 */}
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 22,
-              backgroundColor: '#FFFFFF',
-              alignItems: 'center',
-              justifyContent: 'center',
-              shadowColor: '#0F172A',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.05,
-              shadowRadius: 10,
-              elevation: 2,
-              borderWidth: 1,
-              borderColor: '#F1F5F9',
-            }}
-          >
-            <Menu size={20} color="#0F172A" />
-          </TouchableOpacity>
-
           {/* Right: Bell button 44x44 with notification badge */}
           <TouchableOpacity
             activeOpacity={0.7}
