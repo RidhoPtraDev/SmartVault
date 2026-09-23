@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import {
-  MoreVertical,
+  Bell,
   TrendingUp,
   Lightbulb,
 } from 'lucide-react-native';
@@ -38,16 +38,14 @@ export const BudgetScreen: React.FC = () => {
           Budget
         </Text>
 
-        {/* Right: More Options Button */}
+        {/* Right: Bell button 44x44 with notification badge */}
         <TouchableOpacity
           activeOpacity={0.7}
           style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
+            width: 44,
+            height: 44,
+            borderRadius: 22,
             backgroundColor: '#FFFFFF',
-            borderWidth: 1,
-            borderColor: '#F1F5F9',
             alignItems: 'center',
             justifyContent: 'center',
             shadowColor: '#0F172A',
@@ -55,9 +53,26 @@ export const BudgetScreen: React.FC = () => {
             shadowOpacity: 0.05,
             shadowRadius: 10,
             elevation: 2,
+            borderWidth: 1,
+            borderColor: '#F1F5F9',
+            position: 'relative',
           }}
         >
-          <MoreVertical size={20} color="#0F172A" />
+          <Bell size={20} color="#0F172A" />
+          {/* Red dot badge */}
+          <View
+            style={{
+              position: 'absolute',
+              top: 11,
+              right: 11,
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: '#EF4444',
+              borderWidth: 1.5,
+              borderColor: '#FFFFFF',
+            }}
+          />
         </TouchableOpacity>
       </View>
 
