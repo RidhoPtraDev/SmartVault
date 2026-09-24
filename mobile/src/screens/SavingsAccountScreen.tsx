@@ -195,7 +195,7 @@ const SavingsPlanPanel: React.FC = () => {
             {formatIDR(SAVINGS_PLAN_DATA.monthlyDeposit)}
           </Text>
           <Text style={{ fontSize: 12, fontWeight: '600', color: '#10B981' }}>
-            Rekomendasi Rutin
+            Target Perbulan
           </Text>
         </View>
       </View>
@@ -203,7 +203,7 @@ const SavingsPlanPanel: React.FC = () => {
   );
 };
 
-// ─── Inline: Edit Plan Modal ─────────────────────────────────────────────────
+// ─── Inline: Edit Plan Modal (centered popup) ────────────────────────────────
 const EditPlanModal: React.FC<{
   visible: boolean;
   onClose: () => void;
@@ -211,6 +211,8 @@ const EditPlanModal: React.FC<{
   const [targetInput, setTargetInput] = useState(
     String(SAVINGS_PLAN_DATA.targetAmount)
   );
+  const [tujuanInput, setTujuanInput] = useState(SAVINGS_PLAN_DATA.goal);
+  const [estimasiInput, setEstimasiInput] = useState(SAVINGS_PLAN_DATA.estimatedMonth);
   const [depositInput, setDepositInput] = useState(
     String(SAVINGS_PLAN_DATA.monthlyDeposit)
   );
@@ -224,10 +226,30 @@ const EditPlanModal: React.FC<{
     }, 900);
   };
 
+  const fieldStyle = {
+    borderWidth: 1.5,
+    borderColor: '#C7D2FE',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 11,
+    fontSize: 15,
+    fontWeight: '600' as const,
+    color: '#0F172A',
+    marginBottom: 14,
+    backgroundColor: '#FAFBFF',
+  };
+
+  const labelStyle = {
+    fontSize: 12,
+    fontWeight: '600' as const,
+    color: '#64748B',
+    marginBottom: 6,
+  };
+
   return (
     <Modal
       visible={visible}
-      animationType="slide"
+      animationType="fade"
       transparent
       onRequestClose={onClose}
     >
@@ -235,123 +257,132 @@ const EditPlanModal: React.FC<{
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
+        {/* Backdrop — tap to close */}
         <TouchableOpacity
           activeOpacity={1}
           onPress={onClose}
-          style={{ flex: 1, backgroundColor: 'rgba(15,23,42,0.45)' }}
-        />
-        <View
           style={{
-            backgroundColor: '#FFFFFF',
-            borderTopLeftRadius: 28,
-            borderTopRightRadius: 28,
-            padding: 28,
-            paddingBottom: 40,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(15,23,42,0.52)',
           }}
-        >
-          {/* Header */}
+        />
+
+        {/* Centered Popup Card */}
+        <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 24 }}>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 24,
+              backgroundColor: '#FFFFFF',
+              borderRadius: 24,
+              padding: 24,
+              shadowColor: '#0F172A',
+              shadowOffset: { width: 0, height: 16 },
+              shadowOpacity: 0.2,
+              shadowRadius: 32,
+              elevation: 20,
             }}
           >
-            <Text style={{ fontSize: 20, fontWeight: '700', color: '#0F172A' }}>
-              Edit Rencana Tabungan
-            </Text>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={onClose}
+            {/* Header */}
+            <View
               style={{
-                width: 36,
-                height: 36,
-                borderRadius: 18,
-                backgroundColor: '#F1F5F9',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
-                justifyContent: 'center',
+                marginBottom: 20,
               }}
             >
-              <X size={18} color="#64748B" />
+              <Text style={{ fontSize: 17, fontWeight: '700', color: '#0F172A' }}>
+                Ubah Rencana Tabungan
+              </Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={onClose}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                  backgroundColor: '#F1F5F9',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <X size={16} color="#64748B" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Field: Ubah Target Tabungan */}
+            <Text style={labelStyle}>Ubah Target Tabungan (Rp)</Text>
+            <TextInput
+              value={targetInput}
+              onChangeText={setTargetInput}
+              keyboardType="numeric"
+              style={fieldStyle}
+              placeholderTextColor="#94A3B8"
+              placeholder="Contoh: 15000000"
+            />
+
+            {/* Field: Tujuan */}
+            <Text style={labelStyle}>Tujuan</Text>
+            <TextInput
+              value={tujuanInput}
+              onChangeText={setTujuanInput}
+              style={fieldStyle}
+              placeholderTextColor="#94A3B8"
+              placeholder="Contoh: Dana Darurat"
+            />
+
+            {/* Field: Estimasi Tercapai */}
+            <Text style={labelStyle}>Estimasi Tercapai</Text>
+            <TextInput
+              value={estimasiInput}
+              onChangeText={setEstimasiInput}
+              style={fieldStyle}
+              placeholderTextColor="#94A3B8"
+              placeholder="Contoh: Nov 2026"
+            />
+
+            {/* Field: Setoran Bulanan */}
+            <Text style={labelStyle}>Setoran Bulanan (Rp)</Text>
+            <TextInput
+              value={depositInput}
+              onChangeText={setDepositInput}
+              keyboardType="numeric"
+              style={{ ...fieldStyle, marginBottom: 20 }}
+              placeholderTextColor="#94A3B8"
+              placeholder="Contoh: 950000"
+            />
+
+            {/* Save Button */}
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={handleSave}
+              style={{
+                height: 50,
+                borderRadius: 14,
+                backgroundColor: saved ? '#10B981' : '#4F46E5',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 8,
+              }}
+            >
+              {saved ? (
+                <>
+                  <CheckCircle2 size={19} color="#FFFFFF" />
+                  <Text style={{ fontSize: 15, fontWeight: '700', color: '#FFFFFF' }}>
+                    Tersimpan!
+                  </Text>
+                </>
+              ) : (
+                <Text style={{ fontSize: 15, fontWeight: '700', color: '#FFFFFF' }}>
+                  Simpan Perubahan
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
-
-          {/* Field: Target */}
-          <Text style={{ fontSize: 13, fontWeight: '600', color: '#64748B', marginBottom: 8 }}>
-            Target Total Tabungan (Rp)
-          </Text>
-          <TextInput
-            value={targetInput}
-            onChangeText={setTargetInput}
-            keyboardType="numeric"
-            style={{
-              borderWidth: 1.5,
-              borderColor: '#C7D2FE',
-              borderRadius: 12,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 16,
-              fontWeight: '600',
-              color: '#0F172A',
-              marginBottom: 20,
-              backgroundColor: '#FAFBFF',
-            }}
-            placeholderTextColor="#94A3B8"
-            placeholder="Masukkan target tabungan"
-          />
-
-          {/* Field: Monthly Deposit */}
-          <Text style={{ fontSize: 13, fontWeight: '600', color: '#64748B', marginBottom: 8 }}>
-            Setoran Bulanan (Rp)
-          </Text>
-          <TextInput
-            value={depositInput}
-            onChangeText={setDepositInput}
-            keyboardType="numeric"
-            style={{
-              borderWidth: 1.5,
-              borderColor: '#C7D2FE',
-              borderRadius: 12,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 16,
-              fontWeight: '600',
-              color: '#0F172A',
-              marginBottom: 28,
-              backgroundColor: '#FAFBFF',
-            }}
-            placeholderTextColor="#94A3B8"
-            placeholder="Masukkan setoran bulanan"
-          />
-
-          {/* Save Button */}
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={handleSave}
-            style={{
-              height: 52,
-              borderRadius: 16,
-              backgroundColor: saved ? '#10B981' : '#4F46E5',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              gap: 8,
-            }}
-          >
-            {saved ? (
-              <>
-                <CheckCircle2 size={20} color="#FFFFFF" />
-                <Text style={{ fontSize: 16, fontWeight: '700', color: '#FFFFFF' }}>
-                  Tersimpan!
-                </Text>
-              </>
-            ) : (
-              <Text style={{ fontSize: 16, fontWeight: '700', color: '#FFFFFF' }}>
-                Simpan Perubahan
-              </Text>
-            )}
-          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </Modal>
