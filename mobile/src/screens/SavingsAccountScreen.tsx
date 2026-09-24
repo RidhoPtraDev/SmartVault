@@ -23,7 +23,7 @@ import {
   CheckCircle2,
   PiggyBank,
   Flag,
-  Calendar,
+  CalendarDays,
   TrendingUp,
   Wallet,
   ArrowRight,
@@ -470,7 +470,7 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                 }}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-                  <Calendar size={15} color="#4F46E5" style={{ marginRight: 5 }} />
+                  <CalendarDays size={16} color="#4F46E5" style={{ marginRight: 6 }} />
                   <Text style={{ fontSize: 11.5, fontWeight: '600', color: '#64748B' }}>
                     Estimasi Tercapai
                   </Text>
