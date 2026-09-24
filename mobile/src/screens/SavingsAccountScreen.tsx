@@ -283,7 +283,7 @@ const EditPlanModal: React.FC<{
               elevation: 20,
             }}
           >
-            {/* Header: Piggy Icon + Title + Close Button */}
+            {/* Header: Title + Close Button */}
             <View
               style={{
                 flexDirection: 'row',
@@ -292,27 +292,9 @@ const EditPlanModal: React.FC<{
                 marginBottom: 16,
               }}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 10 }}>
-                <View
-                  style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 22,
-                    backgroundColor: '#EEF2FF',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: 12,
-                  }}
-                >
-                  <PiggyBank size={22} color="#4F46E5" />
-                </View>
-
-                <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 18, fontWeight: '800', color: '#0F172A' }}>
-                    Ubah Detail Tabungan
-                  </Text>
-                </View>
-              </View>
+              <Text style={{ fontSize: 18, fontWeight: '800', color: '#0F172A', flex: 1 }}>
+                Ubah Detail Tabungan
+              </Text>
 
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -561,7 +543,7 @@ const EditPlanModal: React.FC<{
               ) : (
                 <>
                   <Text style={{ fontSize: 16, fontWeight: '700', color: '#FFFFFF' }}>
-                    Simpan Tabungan
+                    Simpan Perbaruan
                   </Text>
                   <ArrowRight size={18} color="#FFFFFF" />
                 </>
