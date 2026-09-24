@@ -219,6 +219,9 @@ interface SavingsModalProps {
 const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) => {
   const [amount, setAmount] = useState('500.000');
   const [note, setNote] = useState(mode === 'add' ? '' : SAVINGS_PLAN_DATA.goal);
+  const [monthlyDeposit, setMonthlyDeposit] = useState(
+    formatIDR(SAVINGS_PLAN_DATA.monthlyDeposit, false)
+  );
   const [selectedChip, setSelectedChip] = useState<string>('500');
   const [saved, setSaved] = useState(false);
 
@@ -483,7 +486,7 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                 </Text>
               </View>
 
-              {/* Setoran Perbulan */}
+              {/* Setoran Perbulan (User Editable) */}
               <View
                 style={{
                   flex: 1,
@@ -498,15 +501,32 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                     Setoran Perbulan
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: '800',
-                    color: '#0F172A',
-                  }}
-                >
-                  {formatIDR(SAVINGS_PLAN_DATA.monthlyDeposit)}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '800',
+                      color: '#4F46E5',
+                      marginRight: 3,
+                    }}
+                  >
+                    Rp
+                  </Text>
+                  <TextInput
+                    value={monthlyDeposit}
+                    onChangeText={setMonthlyDeposit}
+                    keyboardType="numeric"
+                    placeholder="950.000"
+                    placeholderTextColor="#94A3B8"
+                    style={{
+                      flex: 1,
+                      fontSize: 16,
+                      fontWeight: '800',
+                      color: '#0F172A',
+                      padding: 0,
+                    }}
+                  />
+                </View>
               </View>
             </View>
 
