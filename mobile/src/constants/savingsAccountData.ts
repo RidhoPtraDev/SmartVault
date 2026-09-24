@@ -26,7 +26,7 @@ export interface SavingsDateGroup {
 
 export const SAVINGS_ACCOUNT_DATA = {
   id: 'acc-savings',
-  accountName: 'Saving Account',
+  accountName: 'Tabungan',
   balance: 10250000,
   quickActions: [
     {
