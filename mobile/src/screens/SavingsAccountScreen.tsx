@@ -315,38 +315,6 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
               </TouchableOpacity>
             </View>
 
-            {/* Section: Catatan Tabungan (User Input) */}
-            <View
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: 20,
-                borderWidth: 1.5,
-                borderColor: '#EEF2FF',
-                padding: 14,
-                marginBottom: 12,
-              }}
-            >
-              <Text style={{ fontSize: 13, fontWeight: '700', color: '#475569', marginBottom: 8 }}>
-                {mode === 'add' ? 'Catatan Setoran' : 'Catatan Tabungan'}
-              </Text>
-              <TextInput
-                value={note}
-                onChangeText={setNote}
-                placeholder={
-                  mode === 'add'
-                    ? 'Tulis catatan setoran (opsional)...'
-                    : 'Tulis catatan atau tujuan tabungan Anda...'
-                }
-                placeholderTextColor="#94A3B8"
-                style={{
-                  fontSize: 14,
-                  fontWeight: '600',
-                  color: '#0F172A',
-                  paddingVertical: 2,
-                }}
-              />
-            </View>
-
             {/* Section: Nominal Tabungan Card */}
             <View
               style={{
@@ -355,7 +323,7 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                 borderWidth: 1.5,
                 borderColor: '#EEF2FF',
                 padding: 14,
-                marginBottom: 12,
+                marginBottom: mode === 'add' ? 12 : 14,
               }}
             >
               <Text style={{ fontSize: 13, fontWeight: '700', color: '#475569', marginBottom: 8 }}>
@@ -454,6 +422,38 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                 })}
               </View>
             )}
+
+            {/* Section: Catatan Tabungan (User Input) */}
+            <View
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: 20,
+                borderWidth: 1.5,
+                borderColor: '#EEF2FF',
+                padding: 14,
+                marginBottom: 14,
+              }}
+            >
+              <Text style={{ fontSize: 13, fontWeight: '700', color: '#475569', marginBottom: 8 }}>
+                {mode === 'add' ? 'Catatan Setoran' : 'Catatan Tabungan'}
+              </Text>
+              <TextInput
+                value={note}
+                onChangeText={setNote}
+                placeholder={
+                  mode === 'add'
+                    ? 'Tulis catatan setoran (opsional)...'
+                    : 'Tulis catatan atau tujuan tabungan Anda...'
+                }
+                placeholderTextColor="#94A3B8"
+                style={{
+                  fontSize: 14,
+                  fontWeight: '600',
+                  color: '#0F172A',
+                  paddingVertical: 2,
+                }}
+              />
+            </View>
 
             {/* 2 Mini Info Cards Grid */}
             <View style={{ flexDirection: 'row', gap: 10, marginBottom: 18 }}>
