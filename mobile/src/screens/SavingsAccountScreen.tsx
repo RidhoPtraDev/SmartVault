@@ -219,20 +219,15 @@ const EditPlanModal: React.FC<{
   const [saved, setSaved] = useState(false);
 
   const quickChips = [
-    { label: '+250rb', val: '250.000', id: '250', isStar: false },
-    { label: '+500rb', val: '500.000', id: '500', isStar: false },
-    { label: '+950rb ★', val: '950.000', id: '950', isStar: true },
-    { label: '+1jt', val: '1.000.000', id: '1000', isStar: false },
+    { label: '+250rb', val: '250.000', id: '250' },
+    { label: '+500rb', val: '500.000', id: '500' },
+    { label: '+950rb', val: '950.000', id: '950' },
+    { label: '+1jt', val: '1.000.000', id: '1000' },
   ];
 
   const handleSelectChip = (chip: typeof quickChips[0]) => {
     setSelectedChip(chip.id);
     setAmount(chip.val);
-  };
-
-  const handleMax = () => {
-    setSelectedChip('');
-    setAmount(formatIDR(SAVINGS_PLAN_DATA.remainingAmount, false));
   };
 
   const handleClear = () => {
@@ -287,7 +282,7 @@ const EditPlanModal: React.FC<{
               elevation: 20,
             }}
           >
-            {/* Header: Piggy Icon + Titles + Close Button */}
+            {/* Header: Piggy Icon + Title + Close Button */}
             <View
               style={{
                 flexDirection: 'row',
@@ -299,24 +294,21 @@ const EditPlanModal: React.FC<{
               <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 10 }}>
                 <View
                   style={{
-                    width: 46,
-                    height: 46,
-                    borderRadius: 23,
+                    width: 44,
+                    height: 44,
+                    borderRadius: 22,
                     backgroundColor: '#EEF2FF',
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginRight: 12,
                   }}
                 >
-                  <PiggyBank size={24} color="#4F46E5" />
+                  <PiggyBank size={22} color="#4F46E5" />
                 </View>
 
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 18, fontWeight: '800', color: '#0F172A' }}>
-                    Tambah Tabungan
-                  </Text>
-                  <Text style={{ fontSize: 13, fontWeight: '500', color: '#64748B', marginTop: 2 }}>
-                    Isi saldo tabungan target Anda
+                    Ubah Detail Tabungan
                   </Text>
                 </View>
               </View>
@@ -402,41 +394,15 @@ const EditPlanModal: React.FC<{
                 marginBottom: 12,
               }}
             >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Text style={{ fontSize: 13, fontWeight: '700', color: '#475569' }}>
-                  Nominal Tabungan
-                </Text>
-                <View
-                  style={{
-                    backgroundColor: '#ECFDF5',
-                    paddingHorizontal: 8,
-                    paddingVertical: 2.5,
-                    borderRadius: 999,
-                  }}
-                >
-                  <Text style={{ fontSize: 11, fontWeight: '700', color: '#059669' }}>
-                    Rekomendasi: 950rb
-                  </Text>
-                </View>
-                <TouchableOpacity activeOpacity={0.7} onPress={handleMax}>
-                  <Text style={{ fontSize: 13, fontWeight: '700', color: '#4F46E5' }}>
-                    Maksimal
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={{ fontSize: 13, fontWeight: '700', color: '#475569', marginBottom: 8 }}>
+                Nominal Tabungan
+              </Text>
 
               {/* Amount Row */}
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  marginTop: 10,
                 }}
               >
                 <Text
@@ -504,24 +470,16 @@ const EditPlanModal: React.FC<{
                       borderRadius: 999,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      backgroundColor: isSelected
-                        ? '#4338CA'
-                        : chip.isStar
-                        ? '#ECFDF5'
-                        : '#F8FAFC',
+                      backgroundColor: isSelected ? '#4338CA' : '#F8FAFC',
                       borderWidth: isSelected ? 0 : 1,
-                      borderColor: chip.isStar ? '#A7F3D0' : '#E2E8F0',
+                      borderColor: isSelected ? '#4338CA' : '#E2E8F0',
                     }}
                   >
                     <Text
                       style={{
                         fontSize: 12,
                         fontWeight: '700',
-                        color: isSelected
-                          ? '#FFFFFF'
-                          : chip.isStar
-                          ? '#059669'
-                          : '#475569',
+                        color: isSelected ? '#FFFFFF' : '#475569',
                       }}
                     >
                       {chip.label}
