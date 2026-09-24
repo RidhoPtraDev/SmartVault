@@ -411,47 +411,49 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
               </View>
             </View>
 
-            {/* Quick Amount Chips */}
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                gap: 6,
-                marginBottom: 14,
-              }}
-            >
-              {quickChips.map((chip) => {
-                const isSelected = selectedChip === chip.id;
-                return (
-                  <TouchableOpacity
-                    key={chip.id}
-                    activeOpacity={0.8}
-                    onPress={() => handleSelectChip(chip)}
-                    style={{
-                      flex: 1,
-                      paddingVertical: 8,
-                      paddingHorizontal: 4,
-                      borderRadius: 999,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: isSelected ? '#4338CA' : '#F8FAFC',
-                      borderWidth: isSelected ? 0 : 1,
-                      borderColor: isSelected ? '#4338CA' : '#E2E8F0',
-                    }}
-                  >
-                    <Text
+            {/* Quick Amount Chips (Only in Tambah Tabungan mode) */}
+            {mode === 'add' && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  gap: 6,
+                  marginBottom: 14,
+                }}
+              >
+                {quickChips.map((chip) => {
+                  const isSelected = selectedChip === chip.id;
+                  return (
+                    <TouchableOpacity
+                      key={chip.id}
+                      activeOpacity={0.8}
+                      onPress={() => handleSelectChip(chip)}
                       style={{
-                        fontSize: 12,
-                        fontWeight: '700',
-                        color: isSelected ? '#FFFFFF' : '#475569',
+                        flex: 1,
+                        paddingVertical: 8,
+                        paddingHorizontal: 4,
+                        borderRadius: 999,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: isSelected ? '#4338CA' : '#F8FAFC',
+                        borderWidth: isSelected ? 0 : 1,
+                        borderColor: isSelected ? '#4338CA' : '#E2E8F0',
                       }}
                     >
-                      {chip.label}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontWeight: '700',
+                          color: isSelected ? '#FFFFFF' : '#475569',
+                        }}
+                      >
+                        {chip.label}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            )}
 
             {/* 2 Mini Info Cards Grid */}
             <View style={{ flexDirection: 'row', gap: 10, marginBottom: 18 }}>
@@ -516,7 +518,7 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                   {formatIDR(SAVINGS_PLAN_DATA.monthlyDeposit)}
                 </Text>
                 <Text style={{ fontSize: 11, fontWeight: '500', color: '#64748B' }}>
-                  Rekomendasi / bln
+                  Target / bln
                 </Text>
               </View>
             </View>
