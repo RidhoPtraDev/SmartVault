@@ -503,7 +503,7 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Wallet size={15} color="#4F46E5" style={{ marginRight: 5 }} />
                   <Text style={{ fontSize: 11.5, fontWeight: '600', color: '#64748B' }}>
-                    Setoran Rutin
+                    Setoran Perbulan
                   </Text>
                 </View>
                 <Text
