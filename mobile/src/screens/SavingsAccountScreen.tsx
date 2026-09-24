@@ -463,10 +463,10 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                   flex: 1,
                   backgroundColor: '#F1F5FD',
                   borderRadius: 18,
-                  padding: 12,
+                  padding: 14,
                 }}
               >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
                   <Calendar size={15} color="#4F46E5" style={{ marginRight: 5 }} />
                   <Text style={{ fontSize: 11.5, fontWeight: '600', color: '#64748B' }}>
                     Estimasi Tercapai
@@ -474,33 +474,25 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                 </View>
                 <Text
                   style={{
-                    fontSize: 15.5,
+                    fontSize: 16,
                     fontWeight: '800',
                     color: '#0F172A',
-                    marginTop: 4,
-                    marginBottom: 3,
                   }}
                 >
                   {SAVINGS_PLAN_DATA.estimatedMonth}
                 </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <TrendingUp size={13} color="#10B981" style={{ marginRight: 4 }} />
-                  <Text style={{ fontSize: 11.5, fontWeight: '700', color: '#10B981' }}>
-                    {SAVINGS_PLAN_DATA.monthsLeft} Bulan Lagi
-                  </Text>
-                </View>
               </View>
 
-              {/* Setoran Rutin */}
+              {/* Setoran Perbulan */}
               <View
                 style={{
                   flex: 1,
                   backgroundColor: '#F1F5FD',
                   borderRadius: 18,
-                  padding: 12,
+                  padding: 14,
                 }}
               >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
                   <Wallet size={15} color="#4F46E5" style={{ marginRight: 5 }} />
                   <Text style={{ fontSize: 11.5, fontWeight: '600', color: '#64748B' }}>
                     Setoran Perbulan
@@ -508,17 +500,12 @@ const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) =
                 </View>
                 <Text
                   style={{
-                    fontSize: 15.5,
+                    fontSize: 16,
                     fontWeight: '800',
                     color: '#0F172A',
-                    marginTop: 4,
-                    marginBottom: 3,
                   }}
                 >
                   {formatIDR(SAVINGS_PLAN_DATA.monthlyDeposit)}
-                </Text>
-                <Text style={{ fontSize: 11, fontWeight: '500', color: '#64748B' }}>
-                  Target / bln
                 </Text>
               </View>
             </View>
