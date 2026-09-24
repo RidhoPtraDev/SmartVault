@@ -21,6 +21,12 @@ import {
   Pencil,
   X,
   CheckCircle2,
+  PiggyBank,
+  Flag,
+  Calendar,
+  TrendingUp,
+  Wallet,
+  ArrowRight,
 } from 'lucide-react-native';
 import Svg, {
   Defs,
@@ -203,47 +209,43 @@ const SavingsPlanPanel: React.FC = () => {
   );
 };
 
-// ─── Inline: Edit Plan Modal (centered popup) ────────────────────────────────
+// ─── Inline: Edit / Tambah Plan Modal (Pixel Perfect matching design) ────────
 const EditPlanModal: React.FC<{
   visible: boolean;
   onClose: () => void;
 }> = ({ visible, onClose }) => {
-  const [targetInput, setTargetInput] = useState(
-    String(SAVINGS_PLAN_DATA.targetAmount)
-  );
-  const [tujuanInput, setTujuanInput] = useState(SAVINGS_PLAN_DATA.goal);
-  const [estimasiInput, setEstimasiInput] = useState(SAVINGS_PLAN_DATA.estimatedMonth);
-  const [depositInput, setDepositInput] = useState(
-    String(SAVINGS_PLAN_DATA.monthlyDeposit)
-  );
+  const [amount, setAmount] = useState('500.000');
+  const [selectedChip, setSelectedChip] = useState<string>('500');
   const [saved, setSaved] = useState(false);
+
+  const quickChips = [
+    { label: '+250rb', val: '250.000', id: '250', isStar: false },
+    { label: '+500rb', val: '500.000', id: '500', isStar: false },
+    { label: '+950rb ★', val: '950.000', id: '950', isStar: true },
+    { label: '+1jt', val: '1.000.000', id: '1000', isStar: false },
+  ];
+
+  const handleSelectChip = (chip: typeof quickChips[0]) => {
+    setSelectedChip(chip.id);
+    setAmount(chip.val);
+  };
+
+  const handleMax = () => {
+    setSelectedChip('');
+    setAmount(formatIDR(SAVINGS_PLAN_DATA.remainingAmount, false));
+  };
+
+  const handleClear = () => {
+    setSelectedChip('');
+    setAmount('0');
+  };
 
   const handleSave = () => {
     setSaved(true);
     setTimeout(() => {
       setSaved(false);
       onClose();
-    }, 900);
-  };
-
-  const fieldStyle = {
-    borderWidth: 1.5,
-    borderColor: '#C7D2FE',
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 11,
-    fontSize: 15,
-    fontWeight: '600' as const,
-    color: '#0F172A',
-    marginBottom: 14,
-    backgroundColor: '#FAFBFF',
-  };
-
-  const labelStyle = {
-    fontSize: 12,
-    fontWeight: '600' as const,
-    color: '#64748B',
-    marginBottom: 6,
+    }, 800);
   };
 
   return (
@@ -257,7 +259,7 @@ const EditPlanModal: React.FC<{
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
-        {/* Backdrop — tap to close */}
+        {/* Backdrop overlay */}
         <TouchableOpacity
           activeOpacity={1}
           onPress={onClose}
@@ -267,120 +269,381 @@ const EditPlanModal: React.FC<{
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(15,23,42,0.52)',
+            backgroundColor: 'rgba(15, 23, 42, 0.55)',
           }}
         />
 
         {/* Centered Popup Card */}
-        <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 24 }}>
+        <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 20 }}>
           <View
             style={{
               backgroundColor: '#FFFFFF',
-              borderRadius: 24,
-              padding: 24,
+              borderRadius: 28,
+              padding: 22,
               shadowColor: '#0F172A',
               shadowOffset: { width: 0, height: 16 },
-              shadowOpacity: 0.2,
-              shadowRadius: 32,
+              shadowOpacity: 0.25,
+              shadowRadius: 30,
               elevation: 20,
             }}
           >
-            {/* Header */}
+            {/* Header: Piggy Icon + Titles + Close Button */}
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: 20,
+                justifyContent: 'space-between',
+                marginBottom: 16,
               }}
             >
-              <Text style={{ fontSize: 17, fontWeight: '700', color: '#0F172A' }}>
-                Ubah Rencana Tabungan
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 10 }}>
+                <View
+                  style={{
+                    width: 46,
+                    height: 46,
+                    borderRadius: 23,
+                    backgroundColor: '#EEF2FF',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 12,
+                  }}
+                >
+                  <PiggyBank size={24} color="#4F46E5" />
+                </View>
+
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 18, fontWeight: '800', color: '#0F172A' }}>
+                    Tambah Tabungan
+                  </Text>
+                  <Text style={{ fontSize: 13, fontWeight: '500', color: '#64748B', marginTop: 2 }}>
+                    Isi saldo tabungan target Anda
+                  </Text>
+                </View>
+              </View>
+
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={onClose}
                 style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
+                  width: 36,
+                  height: 36,
+                  borderRadius: 18,
                   backgroundColor: '#F1F5F9',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <X size={16} color="#64748B" />
+                <X size={18} color="#64748B" />
               </TouchableOpacity>
             </View>
 
-            {/* Field: Ubah Target Tabungan */}
-            <Text style={labelStyle}>Ubah Target Tabungan (Rp)</Text>
-            <TextInput
-              value={targetInput}
-              onChangeText={setTargetInput}
-              keyboardType="numeric"
-              style={fieldStyle}
-              placeholderTextColor="#94A3B8"
-              placeholder="Contoh: 15000000"
-            />
+            {/* Section: TUJUAN TABUNGAN */}
+            <View
+              style={{
+                backgroundColor: '#F8FAFF',
+                borderRadius: 16,
+                borderWidth: 1.2,
+                borderColor: '#E8EEFF',
+                paddingHorizontal: 14,
+                paddingVertical: 12,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 14,
+              }}
+            >
+              <Flag size={18} color="#4F46E5" style={{ marginRight: 10 }} />
+              <View style={{ flex: 1, marginRight: 8 }}>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: '800',
+                    color: '#4F46E5',
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  TUJUAN TABUNGAN
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    fontSize: 13.5,
+                    fontWeight: '700',
+                    color: '#0F172A',
+                    marginTop: 2,
+                  }}
+                >
+                  {SAVINGS_PLAN_DATA.goal}
+                </Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderWidth: 1,
+                  borderColor: '#E0E7FF',
+                  paddingHorizontal: 9,
+                  paddingVertical: 3,
+                  borderRadius: 999,
+                }}
+              >
+                <Text style={{ fontSize: 11, fontWeight: '700', color: '#4F46E5' }}>
+                  Prioritas
+                </Text>
+              </View>
+            </View>
 
-            {/* Field: Tujuan */}
-            <Text style={labelStyle}>Tujuan</Text>
-            <TextInput
-              value={tujuanInput}
-              onChangeText={setTujuanInput}
-              style={fieldStyle}
-              placeholderTextColor="#94A3B8"
-              placeholder="Contoh: Dana Darurat"
-            />
+            {/* Section: Nominal Tabungan Card */}
+            <View
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: 20,
+                borderWidth: 1.5,
+                borderColor: '#EEF2FF',
+                padding: 14,
+                marginBottom: 12,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ fontSize: 13, fontWeight: '700', color: '#475569' }}>
+                  Nominal Tabungan
+                </Text>
+                <View
+                  style={{
+                    backgroundColor: '#ECFDF5',
+                    paddingHorizontal: 8,
+                    paddingVertical: 2.5,
+                    borderRadius: 999,
+                  }}
+                >
+                  <Text style={{ fontSize: 11, fontWeight: '700', color: '#059669' }}>
+                    Rekomendasi: 950rb
+                  </Text>
+                </View>
+                <TouchableOpacity activeOpacity={0.7} onPress={handleMax}>
+                  <Text style={{ fontSize: 13, fontWeight: '700', color: '#4F46E5' }}>
+                    Maksimal
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-            {/* Field: Estimasi Tercapai */}
-            <Text style={labelStyle}>Estimasi Tercapai</Text>
-            <TextInput
-              value={estimasiInput}
-              onChangeText={setEstimasiInput}
-              style={fieldStyle}
-              placeholderTextColor="#94A3B8"
-              placeholder="Contoh: Nov 2026"
-            />
+              {/* Amount Row */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 22,
+                    fontWeight: '800',
+                    color: '#4F46E5',
+                    marginRight: 6,
+                  }}
+                >
+                  Rp
+                </Text>
+                <TextInput
+                  value={amount}
+                  onChangeText={(val) => {
+                    setAmount(val);
+                    setSelectedChip('');
+                  }}
+                  keyboardType="numeric"
+                  style={{
+                    flex: 1,
+                    fontSize: 24,
+                    fontWeight: '800',
+                    color: '#0F172A',
+                    padding: 0,
+                  }}
+                />
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleClear}
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 12,
+                    backgroundColor: '#E2E8F0',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <X size={13} color="#64748B" />
+                </TouchableOpacity>
+              </View>
+            </View>
 
-            {/* Field: Setoran Bulanan */}
-            <Text style={labelStyle}>Setoran Bulanan (Rp)</Text>
-            <TextInput
-              value={depositInput}
-              onChangeText={setDepositInput}
-              keyboardType="numeric"
-              style={{ ...fieldStyle, marginBottom: 20 }}
-              placeholderTextColor="#94A3B8"
-              placeholder="Contoh: 950000"
-            />
+            {/* Quick Amount Chips */}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: 6,
+                marginBottom: 14,
+              }}
+            >
+              {quickChips.map((chip) => {
+                const isSelected = selectedChip === chip.id;
+                return (
+                  <TouchableOpacity
+                    key={chip.id}
+                    activeOpacity={0.8}
+                    onPress={() => handleSelectChip(chip)}
+                    style={{
+                      flex: 1,
+                      paddingVertical: 8,
+                      paddingHorizontal: 4,
+                      borderRadius: 999,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: isSelected
+                        ? '#4338CA'
+                        : chip.isStar
+                        ? '#ECFDF5'
+                        : '#F8FAFC',
+                      borderWidth: isSelected ? 0 : 1,
+                      borderColor: chip.isStar ? '#A7F3D0' : '#E2E8F0',
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: '700',
+                        color: isSelected
+                          ? '#FFFFFF'
+                          : chip.isStar
+                          ? '#059669'
+                          : '#475569',
+                      }}
+                    >
+                      {chip.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            {/* 2 Mini Info Cards Grid */}
+            <View style={{ flexDirection: 'row', gap: 10, marginBottom: 18 }}>
+              {/* Estimasi Tercapai */}
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: '#F1F5FD',
+                  borderRadius: 18,
+                  padding: 12,
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Calendar size={15} color="#4F46E5" style={{ marginRight: 5 }} />
+                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: '#64748B' }}>
+                    Estimasi Tercapai
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 15.5,
+                    fontWeight: '800',
+                    color: '#0F172A',
+                    marginTop: 4,
+                    marginBottom: 3,
+                  }}
+                >
+                  {SAVINGS_PLAN_DATA.estimatedMonth}
+                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <TrendingUp size={13} color="#10B981" style={{ marginRight: 4 }} />
+                  <Text style={{ fontSize: 11.5, fontWeight: '700', color: '#10B981' }}>
+                    {SAVINGS_PLAN_DATA.monthsLeft} Bulan Lagi
+                  </Text>
+                </View>
+              </View>
+
+              {/* Setoran Rutin */}
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: '#F1F5FD',
+                  borderRadius: 18,
+                  padding: 12,
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Wallet size={15} color="#4F46E5" style={{ marginRight: 5 }} />
+                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: '#64748B' }}>
+                    Setoran Rutin
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 15.5,
+                    fontWeight: '800',
+                    color: '#0F172A',
+                    marginTop: 4,
+                    marginBottom: 3,
+                  }}
+                >
+                  {formatIDR(SAVINGS_PLAN_DATA.monthlyDeposit)}
+                </Text>
+                <Text style={{ fontSize: 11, fontWeight: '500', color: '#64748B' }}>
+                  Rekomendasi / bln
+                </Text>
+              </View>
+            </View>
 
             {/* Save Button */}
             <TouchableOpacity
               activeOpacity={0.85}
               onPress={handleSave}
               style={{
-                height: 50,
-                borderRadius: 14,
-                backgroundColor: saved ? '#10B981' : '#4F46E5',
+                height: 52,
+                borderRadius: 26,
+                backgroundColor: saved ? '#10B981' : '#4338CA',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexDirection: 'row',
                 gap: 8,
+                shadowColor: '#4338CA',
+                shadowOffset: { width: 0, height: 6 },
+                shadowOpacity: 0.25,
+                shadowRadius: 12,
+                elevation: 4,
               }}
             >
               {saved ? (
                 <>
-                  <CheckCircle2 size={19} color="#FFFFFF" />
-                  <Text style={{ fontSize: 15, fontWeight: '700', color: '#FFFFFF' }}>
+                  <CheckCircle2 size={20} color="#FFFFFF" />
+                  <Text style={{ fontSize: 16, fontWeight: '700', color: '#FFFFFF' }}>
                     Tersimpan!
                   </Text>
                 </>
               ) : (
-                <Text style={{ fontSize: 15, fontWeight: '700', color: '#FFFFFF' }}>
-                  Simpan Perubahan
-                </Text>
+                <>
+                  <Text style={{ fontSize: 16, fontWeight: '700', color: '#FFFFFF' }}>
+                    Simpan Tabungan
+                  </Text>
+                  <ArrowRight size={18} color="#FFFFFF" />
+                </>
               )}
+            </TouchableOpacity>
+
+            {/* Batal Button */}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={onClose}
+              style={{ marginTop: 12, alignItems: 'center', paddingVertical: 4 }}
+            >
+              <Text style={{ fontSize: 14, fontWeight: '600', color: '#94A3B8' }}>
+                Batal
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -462,8 +725,9 @@ export const SavingsAccountScreen: React.FC<SavingsAccountScreenProps> = ({ onBa
     if (actionId === 'qa-rencana') {
       setSheetMode('plan');
       animateTo(EXPANDED_TOP);
+    } else if (actionId === 'qa-tambah') {
+      setEditModalVisible(true);
     }
-    // 'qa-tambah' can be handled later
   };
 
   return (
