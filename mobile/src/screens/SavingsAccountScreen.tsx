@@ -215,6 +215,7 @@ const EditPlanModal: React.FC<{
   onClose: () => void;
 }> = ({ visible, onClose }) => {
   const [amount, setAmount] = useState('500.000');
+  const [note, setNote] = useState(SAVINGS_PLAN_DATA.goal);
   const [selectedChip, setSelectedChip] = useState<string>('500');
   const [saved, setSaved] = useState(false);
 
@@ -329,58 +330,32 @@ const EditPlanModal: React.FC<{
               </TouchableOpacity>
             </View>
 
-            {/* Section: TUJUAN TABUNGAN */}
+            {/* Section: Catatan Tabungan (User Input) */}
             <View
               style={{
-                backgroundColor: '#F8FAFF',
-                borderRadius: 16,
-                borderWidth: 1.2,
-                borderColor: '#E8EEFF',
-                paddingHorizontal: 14,
-                paddingVertical: 12,
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 14,
+                backgroundColor: '#FFFFFF',
+                borderRadius: 20,
+                borderWidth: 1.5,
+                borderColor: '#EEF2FF',
+                padding: 14,
+                marginBottom: 12,
               }}
             >
-              <Flag size={18} color="#4F46E5" style={{ marginRight: 10 }} />
-              <View style={{ flex: 1, marginRight: 8 }}>
-                <Text
-                  style={{
-                    fontSize: 10,
-                    fontWeight: '800',
-                    color: '#4F46E5',
-                    letterSpacing: 0.5,
-                  }}
-                >
-                  TUJUAN TABUNGAN
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    fontSize: 13.5,
-                    fontWeight: '700',
-                    color: '#0F172A',
-                    marginTop: 2,
-                  }}
-                >
-                  {SAVINGS_PLAN_DATA.goal}
-                </Text>
-              </View>
-              <View
+              <Text style={{ fontSize: 13, fontWeight: '700', color: '#475569', marginBottom: 8 }}>
+                Catatan Tabungan
+              </Text>
+              <TextInput
+                value={note}
+                onChangeText={setNote}
+                placeholder="Tulis catatan atau tujuan tabungan Anda..."
+                placeholderTextColor="#94A3B8"
                 style={{
-                  backgroundColor: '#FFFFFF',
-                  borderWidth: 1,
-                  borderColor: '#E0E7FF',
-                  paddingHorizontal: 9,
-                  paddingVertical: 3,
-                  borderRadius: 999,
+                  fontSize: 14,
+                  fontWeight: '600',
+                  color: '#0F172A',
+                  paddingVertical: 2,
                 }}
-              >
-                <Text style={{ fontSize: 11, fontWeight: '700', color: '#4F46E5' }}>
-                  Prioritas
-                </Text>
-              </View>
+              />
             </View>
 
             {/* Section: Nominal Tabungan Card */}
