@@ -209,13 +209,16 @@ const SavingsPlanPanel: React.FC = () => {
   );
 };
 
-// ─── Inline: Edit / Tambah Plan Modal (Pixel Perfect matching design) ────────
-const EditPlanModal: React.FC<{
+// ─── Inline: Savings Modal (Tambah Tabungan & Ubah Detail Tabungan) ──────────
+interface SavingsModalProps {
   visible: boolean;
+  mode: 'add' | 'edit';
   onClose: () => void;
-}> = ({ visible, onClose }) => {
+}
+
+const SavingsModal: React.FC<SavingsModalProps> = ({ visible, mode, onClose }) => {
   const [amount, setAmount] = useState('500.000');
-  const [note, setNote] = useState(SAVINGS_PLAN_DATA.goal);
+  const [note, setNote] = useState(mode === 'add' ? '' : SAVINGS_PLAN_DATA.goal);
   const [selectedChip, setSelectedChip] = useState<string>('500');
   const [saved, setSaved] = useState(false);
 
@@ -293,7 +296,7 @@ const EditPlanModal: React.FC<{
               }}
             >
               <Text style={{ fontSize: 18, fontWeight: '800', color: '#0F172A', flex: 1 }}>
-                Ubah Detail Tabungan
+                {mode === 'add' ? 'Tambah Tabungan' : 'Ubah Detail Tabungan'}
               </Text>
 
               <TouchableOpacity
@@ -324,12 +327,16 @@ const EditPlanModal: React.FC<{
               }}
             >
               <Text style={{ fontSize: 13, fontWeight: '700', color: '#475569', marginBottom: 8 }}>
-                Catatan Tabungan
+                {mode === 'add' ? 'Catatan Setoran' : 'Catatan Tabungan'}
               </Text>
               <TextInput
                 value={note}
                 onChangeText={setNote}
-                placeholder="Tulis catatan atau tujuan tabungan Anda..."
+                placeholder={
+                  mode === 'add'
+                    ? 'Tulis catatan setoran (opsional)...'
+                    : 'Tulis catatan atau tujuan tabungan Anda...'
+                }
                 placeholderTextColor="#94A3B8"
                 style={{
                   fontSize: 14,
@@ -537,13 +544,13 @@ const EditPlanModal: React.FC<{
                 <>
                   <CheckCircle2 size={20} color="#FFFFFF" />
                   <Text style={{ fontSize: 16, fontWeight: '700', color: '#FFFFFF' }}>
-                    Tersimpan!
+                    {mode === 'add' ? 'Tabungan Ditambahkan!' : 'Tersimpan!'}
                   </Text>
                 </>
               ) : (
                 <>
                   <Text style={{ fontSize: 16, fontWeight: '700', color: '#FFFFFF' }}>
-                    Simpan Perbaruan
+                    {mode === 'add' ? 'Simpan Tabungan' : 'Simpan Perbaruan'}
                   </Text>
                   <ArrowRight size={18} color="#FFFFFF" />
                 </>
@@ -574,7 +581,8 @@ export const SavingsAccountScreen: React.FC<SavingsAccountScreenProps> = ({ onBa
   const [selectedMonth, setSelectedMonth] = useState(SAVINGS_ACCOUNT_DATA.activeMonth);
   const [isExpanded, setIsExpanded] = useState(false);
   const [sheetMode, setSheetMode] = useState<'transactions' | 'plan'>('transactions');
-  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const EXPANDED_TOP = 76;
   const COLLAPSED_TOP = Math.max(345, Math.min(screenHeight * 0.44, 360));
@@ -641,7 +649,8 @@ export const SavingsAccountScreen: React.FC<SavingsAccountScreenProps> = ({ onBa
       setSheetMode('plan');
       animateTo(EXPANDED_TOP);
     } else if (actionId === 'qa-tambah') {
-      setEditModalVisible(true);
+      setModalMode('add');
+      setModalVisible(true);
     }
   };
 
@@ -924,7 +933,10 @@ export const SavingsAccountScreen: React.FC<SavingsAccountScreenProps> = ({ onBa
               {sheetMode === 'plan' && (
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  onPress={() => setEditModalVisible(true)}
+                  onPress={() => {
+                    setModalMode('edit');
+                    setModalVisible(true);
+                  }}
                   style={{
                     width: 36,
                     height: 36,
@@ -1142,10 +1154,11 @@ export const SavingsAccountScreen: React.FC<SavingsAccountScreenProps> = ({ onBa
         )}
       </Animated.View>
 
-      {/* ─── 5. EDIT PLAN MODAL ─── */}
-      <EditPlanModal
-        visible={editModalVisible}
-        onClose={() => setEditModalVisible(false)}
+      {/* ─── 5. SAVINGS MODAL (TAMBAH & UBAH) ─── */}
+      <SavingsModal
+        visible={modalVisible}
+        mode={modalMode}
+        onClose={() => setModalVisible(false)}
       />
     </SafeAreaView>
   );
