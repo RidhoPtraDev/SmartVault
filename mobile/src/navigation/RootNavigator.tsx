@@ -6,6 +6,7 @@ import { BudgetScreen } from '../screens/BudgetScreen';
 import { SavingsScreen } from '../screens/SavingsScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { MainAccountScreen } from '../screens/MainAccountScreen';
+import { SavingsAccountScreen } from '../screens/SavingsAccountScreen';
 import { AuthScreen } from '../screens/AuthScreen';
 import { SplashScreen } from '../screens/SplashScreen';
 import { FloatingNavDock } from '../components/ui/FloatingNavDock';
@@ -86,7 +87,11 @@ export const RootNavigator: React.FC = () => {
     return <AuthScreen />;
   }
 
-  // — Alur 3: Account Detail Screen (Main Account) —
+  // — Alur 3: Account Detail Screens —
+  if (selectedAccountId === 'acc-savings') {
+    return <SavingsAccountScreen onBack={() => setSelectedAccountId(null)} />;
+  }
+
   if (selectedAccountId) {
     return <MainAccountScreen onBack={() => setSelectedAccountId(null)} />;
   }
